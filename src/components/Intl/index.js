@@ -20,8 +20,8 @@ const InnerProvider = withFetch(({ children, data: messages, locale }) => {
 
 export const IntlProvider = ({
   locale: baseLocale,
-  importMessages,
-  moduleName,
+  importMessages = () => ({}),
+  moduleName = "Global",
   children,
 }) => {
   const {
@@ -54,12 +54,12 @@ export const IntlProvider = ({
   );
 };
 
-IntlProvider.defaultProps = {
-  moduleName: "Global",
-  importMessages: () => ({}),
-};
-
-export const FormattedMessage = ({ id, moduleName, children, ...props }) => {
+export const FormattedMessage = ({
+  id,
+  moduleName = "Global",
+  children,
+  ...props
+}) => {
   const moduleId = `${moduleName}_${id}`;
   if (typeof children === "function") {
     return (
@@ -71,10 +71,6 @@ export const FormattedMessage = ({ id, moduleName, children, ...props }) => {
     );
   }
   return <IntlFormattedMessage {...props} id={moduleId} />;
-};
-
-FormattedMessage.defaultProps = {
-  moduleName: "Global",
 };
 
 export const useIntl = (props) => {

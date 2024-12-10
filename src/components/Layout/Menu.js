@@ -13,7 +13,7 @@ const Menu = ({
   items,
   currentKey,
   onChange,
-  allowCollapsed,
+  allowCollapsed = true,
   defaultOpenKeys,
 }) => {
   const navigation = useNavigate();
@@ -141,10 +141,6 @@ const Menu = ({
       expandIcon={<Icon type="icon-arrow-bold-right" />}
     />
   );
-};
-
-Menu.defaultProps = {
-  allowCollapsed: true,
 };
 
 export default Menu;

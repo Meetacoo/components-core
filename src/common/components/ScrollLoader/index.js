@@ -35,8 +35,8 @@ const ScrollLoader = forwardRef(
       noMore,
       onLoader,
       isLoading,
-      completeTips,
-      maxFullCount,
+      completeTips = "加载完成",
+      maxFullCount = 3,
       children,
     },
     ref
@@ -92,10 +92,5 @@ const ScrollLoader = forwardRef(
     );
   }
 );
-
-ScrollLoader.defaultProps = {
-  maxFullCount: 3,
-  completeTips: "加载完成",
-};
 
 export default ScrollLoader;

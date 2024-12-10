@@ -67,10 +67,48 @@ const TreeFieldInner = ({ value: selected, setValue: setSelect, size }) => {
   );
 };
 
-const TreeField = ({ maxLength, dataFormat, ...props }) => {
+const treeFieldDataFormat = (data, { fieldNames }) => {
+  const treeToList = memoize((nodeList, { fieldNames }) => {
+    const list = [];
+    const core = (nodeList) => {
+      if (!(Array.isArray(nodeList) && nodeList.length > 0)) {
+        return;
+      }
+      nodeList.forEach((node) => {
+        const value = node[get(fieldNames, "key", "key")],
+          label = node[get(fieldNames, "title", "title")],
+          children = node[get(fieldNames, "children", "children")];
+        list.push({ id: value, value, label });
+        core(children);
+      });
+    };
+    core(nodeList);
+    return list;
+  });
+
+  return {
+    treeData: data,
+    list: treeToList(data, { fieldNames }),
+  };
+};
+
+const TreeField = ({
+  maxLength = Number.MAX_VALUE,
+  dataFormat = treeFieldDataFormat,
+  ...props
+}) => {
   return (
     <SelectInnerInput
-      {...props}
+      {...Object.assign(
+        {},
+        {
+          searchPlaceholder: "搜索",
+          size: "middle",
+          isPopup: true,
+          checkStrictly: false,
+        },
+        props
+      )}
       dataFormat={(data) => {
         return dataFormat(data, { fieldNames: props.fieldNames });
       }}
@@ -82,38 +120,6 @@ const TreeField = ({ maxLength, dataFormat, ...props }) => {
       }}
     </SelectInnerInput>
   );
-};
-
-TreeField.defaultProps = {
-  searchPlaceholder: "搜索",
-  maxLength: Number.MAX_VALUE,
-  size: "middle",
-  isPopup: true,
-  checkStrictly: false,
-  dataFormat: (data, { fieldNames }) => {
-    const treeToList = memoize((nodeList, { fieldNames }) => {
-      const list = [];
-      const core = (nodeList) => {
-        if (!(Array.isArray(nodeList) && nodeList.length > 0)) {
-          return;
-        }
-        nodeList.forEach((node) => {
-          const value = node[get(fieldNames, "key", "key")],
-            label = node[get(fieldNames, "title", "title")],
-            children = node[get(fieldNames, "children", "children")];
-          list.push({ id: value, value, label });
-          core(children);
-        });
-      };
-      core(nodeList);
-      return list;
-    });
-
-    return {
-      treeData: data,
-      list: treeToList(data, { fieldNames }),
-    };
-  },
 };
 
 export default TreeField;

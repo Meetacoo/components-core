@@ -270,51 +270,55 @@ const SalaryInputField = ({
     </div>
   );
 };
-const SalaryField = (props) => {
-  return (
-    <IntlProvider moduleName="FormInfo" importMessages={importMessages}>
-      <SalaryInputField {...props} />
-    </IntlProvider>
-  );
+
+const salaryFieldDefaultApi = {
+  loader: () => {
+    return [
+      {
+        value: 1,
+        label: "面议",
+      },
+      {
+        value: 2,
+        label: "时薪",
+      },
+      {
+        value: 3,
+        label: "日薪",
+      },
+      {
+        value: 4,
+        label: "周薪",
+      },
+      {
+        value: 5,
+        label: "月薪",
+      },
+      {
+        value: 6,
+        label: "年薪",
+      },
+    ];
+  },
 };
 
-SalaryField.defaultProps = {
-  api: {
-    loader: () => {
-      return [
-        {
-          value: 1,
-          label: "面议",
-        },
-        {
-          value: 2,
-          label: "时薪",
-        },
-        {
-          value: 3,
-          label: "日薪",
-        },
-        {
-          value: 4,
-          label: "周薪",
-        },
-        {
-          value: 5,
-          label: "月薪",
-        },
-        {
-          value: 6,
-          label: "年薪",
-        },
-      ];
-    },
-  },
-  defaultValue: {
-    type: 5,
-    min: "",
-    max: "",
-    month: 12,
-  },
+const salaryFieldDefaultValue = {
+  type: 5,
+  min: "",
+  max: "",
+  month: 12,
+};
+
+const SalaryField = ({
+  api = salaryFieldDefaultApi,
+  defaultValue = salaryFieldDefaultValue,
+  ...props
+}) => {
+  return (
+    <IntlProvider moduleName="FormInfo" importMessages={importMessages}>
+      <SalaryInputField api={api} defaultValue={defaultValue} {...props} />
+    </IntlProvider>
+  );
 };
 
 const SalaryInput = (props) => {

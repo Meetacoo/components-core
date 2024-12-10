@@ -12,16 +12,16 @@ import importMessages from "./locale";
 import style from "./style.module.scss";
 
 const FileListInner = ({
-  maxLength,
+  maxLength = Number.MAX_VALUE,
   list: _previewList,
   setList,
-  defaultTab,
+  defaultTab = "list",
   defaultPreviewFileId,
   apis: currentApis,
-  getPermission,
+  getPermission = () => true,
   titleExtra,
-  fileSize,
-  accept,
+  fileSize = 20,
+  accept = [".png", ".jpg", ".pdf", ".docx", ".doc"],
   getPopupContainer,
 }) => {
   const { apis: baseApis } = usePreset();
@@ -173,15 +173,6 @@ const FileListInner = ({
       <DragArea />
     </DragAreaOuter>
   );
-};
-
-FileListInner.defaultProps = {
-  defaultTab: "list",
-  titleExtra: null,
-  accept: [".png", ".jpg", ".pdf", ".docx", ".doc"],
-  fileSize: 20,
-  maxLength: Number.MAX_VALUE,
-  getPermission: () => true,
 };
 
 const FileList = (props) => {

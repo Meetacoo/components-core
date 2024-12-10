@@ -16,7 +16,7 @@ import findIndex from "lodash/findIndex";
 const LEVEL = ["high", "middle", "low"];
 
 const NotificationItem = ({
-  level,
+  level = "low",
   title,
   groupLength,
   subtitle,
@@ -128,10 +128,6 @@ const NotificationItem = ({
       </div>
     </div>
   );
-};
-
-NotificationItem.defaultProps = {
-  level: "low",
 };
 
 const Notification = ({ itemClassName }) => {

@@ -6,11 +6,11 @@ import { usePreset } from "@components/Global";
 import useControlValue from "@kne/use-control-value";
 
 const FileUpload = ({
-  maxLength,
+  maxLength = Number.MAX_VALUE,
   apis: currentApis,
-  getPermission,
-  fileSize,
-  accept,
+  getPermission = () => true,
+  fileSize = 20,
+  accept = [".png", ".jpg", ".pdf", ".docx", ".doc"],
   ...props
 }) => {
   const { apis: baseApis } = usePreset();
@@ -23,7 +23,7 @@ const FileUpload = ({
   const { fileList: uploadingList, onFileSelected } = useFileUpload({
     maxLength,
     multiple: true,
-    value: previewList,
+    value: previewList || [],
     onChange: setList,
     concurrentCount: 1,
     onSave: async (...args) => {
@@ -61,14 +61,6 @@ const FileUpload = ({
       <DragArea />
     </DragAreaOuter>
   );
-};
-
-FileUpload.defaultProps = {
-  accept: [".png", ".jpg", ".pdf", ".docx", ".doc"],
-  defaultList: [],
-  fileSize: 20,
-  maxLength: Number.MAX_VALUE,
-  getPermission: () => true,
 };
 
 export default FileUpload;

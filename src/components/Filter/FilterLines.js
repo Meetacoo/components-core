@@ -59,7 +59,7 @@ const Line = ({ list, children }) => {
 const FilterLines = ({
   className,
   list,
-  displayLine,
+  displayLine = 1,
   label,
   extra,
   children,
@@ -196,10 +196,6 @@ const FilterLines = ({
       </Space>
     </IntlProvider>
   );
-};
-
-FilterLines.defaultProps = {
-  displayLine: 1,
 };
 
 export default FilterLines;

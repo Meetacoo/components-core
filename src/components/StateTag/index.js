@@ -20,10 +20,10 @@ const tagTypeEnum = {
 };
 
 const StateTag = ({
-  showBorder,
-  text,
-  type,
-  showBackground,
+  showBorder = false,
+  text = "",
+  type = "default",
+  showBackground = true,
   className,
   filterName,
   ...props
@@ -51,7 +51,7 @@ const StateTag = ({
       ) : null}
       <Tag
         color={tagColor.color}
-        {...props}
+        {...Object.assign({}, { color: "#666666" }, props)}
         style={{
           background: showBackground ? tagColor.color + "0F" : "none",
           color: tagColor.color,
@@ -72,15 +72,6 @@ const StateTag = ({
       </Tag>
     </Space>
   );
-};
-
-StateTag.defaultProps = {
-  color: "#666666",
-  type: "default",
-  showBorder: false,
-  showBackground: true,
-  text: "",
-  className: "",
 };
 
 export default StateTag;

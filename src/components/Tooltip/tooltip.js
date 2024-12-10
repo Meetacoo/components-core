@@ -56,6 +56,4 @@ const Tooltip = ({
   );
 };
 
-Tooltip.defaultProps = {};
-
 export default Tooltip;

@@ -21,7 +21,7 @@ import { useDebouncedCallback } from "use-debounce";
 import { hooks } from "@kne/react-form-antd";
 import merge from "lodash/merge";
 import style from "./style.module.scss";
-import defaultAvatar from "../../../../defaultAvatar.svg";
+import defaultAvatarSvg from "../../../../defaultAvatar.svg";
 import { IntlProvider, FormattedMessage, useIntl } from "@components/Intl";
 import importMessages from "@components/FormInfo/locale";
 import { createWithIntl } from "../../../Intl";
@@ -106,7 +106,7 @@ const ControlAvatarEditor = forwardRef(
       renderTips,
       getApi,
       shape,
-      border,
+      border = 1,
       ...props
     },
     ref
@@ -292,10 +292,6 @@ const ControlAvatarEditor = forwardRef(
   }
 );
 
-ControlAvatarEditor.defaultProps = {
-  border: 1,
-};
-
 const useDropModal = () => {
   const modal = useModal();
   return (props) => {
@@ -362,20 +358,24 @@ const AvatarField = createWithIntl({ importMessages, moduleName: "FormInfo" })(
   ({
     value,
     gender,
-    fileSize,
-    accept,
-    openEditor,
+    fileSize = 2,
+    accept = [".jpg", ".png", ".jpeg"],
+    openEditor = true,
     apis: currentApis,
-    renderTips,
+    renderTips = (defaultTips) => defaultTips,
     onChange,
-    shape,
-    width,
-    height,
-    title,
-    border,
+    shape = "circle",
+    width = 200,
+    height = 200,
+    title = (
+      <IntlProvider importMessages={importMessages} moduleName="FormInfo">
+        <FormattedMessage id={"Crop"} moduleName="FormInfo" />
+      </IntlProvider>
+    ),
+    border = 1,
     icon,
-    dropModalSize,
-    defaultAvatar,
+    dropModalSize = "small",
+    defaultAvatar = defaultAvatarSvg,
   }) => {
     const [loading, setLoading] = useState(false);
     const { apis: baseApis } = usePreset();
@@ -451,32 +451,10 @@ const AvatarField = createWithIntl({ importMessages, moduleName: "FormInfo" })(
   }
 );
 
-AvatarField.defaultProps = {
-  defaultAvatar,
-  openEditor: true,
-  fileSize: 2,
-  width: 200,
-  height: 200,
-  dropModalSize: "small",
-  border: 1,
-  title: (
-    <IntlProvider importMessages={importMessages} moduleName="FormInfo">
-      <FormattedMessage id={"Crop"} moduleName="FormInfo" />
-    </IntlProvider>
-  ),
-  accept: [".jpg", ".png", ".jpeg"],
-  renderTips: (defaultTips) => {
-    return defaultTips;
-  },
-  shape: "circle",
-};
-
 const Avatar = (props) => {
   const render = useOnChange(props);
   return render(AvatarField);
 };
-
-Avatar.defaultProps = {};
 
 Avatar.Field = AvatarField;
 Avatar.useDropModal = useDropModal;

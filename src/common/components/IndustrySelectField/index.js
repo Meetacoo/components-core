@@ -35,7 +35,7 @@ const IndustrySelectField = ({ apis: currentApis, ...props }) => {
   );
   return (
     <CascaderField
-      {...props}
+      {...Object.assign({}, { overlayWidth: "635px" }, props)}
       api={Object.assign(
         {},
         {
@@ -64,10 +64,6 @@ const IndustrySelectField = ({ apis: currentApis, ...props }) => {
       )}
     />
   );
-};
-
-IndustrySelectField.defaultProps = {
-  overlayWidth: "635px",
 };
 
 const Enum = ({ apis: currentApis, ...props }) => {

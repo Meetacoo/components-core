@@ -231,8 +231,33 @@ const TableList = withFetch(
   }
 );
 
-const TablePage = forwardRef(({ pagination, ...props }, ref) => {
+const tablePageDefaultProps = {
+  controllerOpen: true,
+  size: "middle",
+  stickyOffset: "var(--nav-height)",
+  sticky: {
+    getContainer: getScrollEl,
+  },
+  scroller: {
+    getContainer: getScrollEl,
+  },
+  scroll: { x: "max-content" },
+  rowKey: "id",
+  pagination: {},
+  dataFormat: (data) => {
+    return {
+      list: data.pageData,
+      total: data.totalCount,
+    };
+  },
+};
+
+const TablePage = forwardRef(({ pagination = {}, ...other }, ref) => {
   const [pageSize, setPageSize] = useState(20);
+  const props = useMemo(() => {
+    Object.assign({}, tablePageDefaultProps, other);
+  }, [other]);
+
   pagination = Object.assign(
     {},
     {
@@ -280,26 +305,5 @@ const TablePage = forwardRef(({ pagination, ...props }, ref) => {
     />
   );
 });
-
-TablePage.defaultProps = {
-  controllerOpen: true,
-  size: "middle",
-  stickyOffset: "var(--nav-height)",
-  sticky: {
-    getContainer: getScrollEl,
-  },
-  scroller: {
-    getContainer: getScrollEl,
-  },
-  scroll: { x: "max-content" },
-  rowKey: "id",
-  pagination: {},
-  dataFormat: (data) => {
-    return {
-      list: data.pageData,
-      total: data.totalCount,
-    };
-  },
-};
 
 export default TablePage;

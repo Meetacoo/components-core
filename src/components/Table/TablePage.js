@@ -45,7 +45,10 @@ const TablePageInner = withFetch(
     setData,
     loadMore,
     send,
-    dataFormat,
+    dataFormat = (data) => ({
+      list: data.pageData,
+      total: data.totalCount,
+    }),
     className,
     featureId,
     columns,
@@ -61,7 +64,7 @@ const TablePageInner = withFetch(
     }, [data, handlerDataFormat]);
 
     const tableProps = {
-      dataSource: formatData.list,
+      dataSource: formatData?.list || [],
       pagination: pagination.open
         ? {
             total: formatData.total,

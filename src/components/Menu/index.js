@@ -143,7 +143,7 @@ const MenuItem = (props) => {
   );
 };
 
-const Menu = ({ className, allowCollapsed, pathMatch, ...props }) => {
+const Menu = ({ className, allowCollapsed = true, pathMatch, ...props }) => {
   const { pathname, search } = useLocation();
   const [selectedKey, setSelectKeyChange] = useControlValue(props, {
     value: "currentKey",
@@ -168,7 +168,7 @@ const Menu = ({ className, allowCollapsed, pathMatch, ...props }) => {
       items: targetItems,
       childrenKeys,
       nodeMapping,
-    } = treeEnhance(items);
+    } = treeEnhance(items || []);
     let hasStartIcon = false,
       hasChildren = false;
     const links = [],
@@ -303,11 +303,6 @@ const Menu = ({ className, allowCollapsed, pathMatch, ...props }) => {
       {renderChildren(targetItems, { selectedKey, openKeys })}
     </div>
   );
-};
-
-Menu.defaultProps = {
-  defaultItems: [],
-  allowCollapsed: true,
 };
 
 export default Menu;

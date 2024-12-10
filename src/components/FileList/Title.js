@@ -17,7 +17,7 @@ const Title = ({
   setCurrentPreviewFileId,
   itemApis,
   children,
-  maxWidth,
+  maxWidth = 260,
   getPopupContainer,
 }) => {
   return (
@@ -134,10 +134,6 @@ const Title = ({
       </Row>
     </div>
   );
-};
-
-Title.defaultProps = {
-  maxWidth: 260,
 };
 
 export default Title;

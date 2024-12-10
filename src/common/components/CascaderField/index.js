@@ -314,29 +314,7 @@ const CascaderInner = ({ value, setValue, size, selectLevel }) => {
   );
 };
 
-const CascaderField = ({ maxLength, nodeFormat, dataFormat, ...props }) => {
-  return (
-    <SelectInnerInput
-      {...props}
-      dataFormat={(data) => {
-        return dataFormat(data, nodeFormat);
-      }}
-    >
-      {({ value, setValue }) => {
-        return (
-          <CascaderInner
-            {...props}
-            size={maxLength}
-            value={value}
-            setValue={setValue}
-          />
-        );
-      }}
-    </SelectInnerInput>
-  );
-};
-
-CascaderField.defaultProps = {
+const cascaderFieldDefaultProps = {
   maxLength: Number.MAX_VALUE,
   size: "middle",
   isPopup: true,
@@ -349,26 +327,6 @@ CascaderField.defaultProps = {
     return Array.from(mapping.values()).filter((item) => {
       return item.label.indexOf(searchText) > -1;
     });
-  },
-  dataFormat: (data, nodeFormat) => {
-    const core = (data, parentId) => {
-      const output = [];
-      output.push(
-        ...(data || []).map((item) => {
-          if (typeof nodeFormat === "function") {
-            Object.assign(item, nodeFormat(item));
-          }
-          if (item.children && item.children.length > 0) {
-            output.push(...core(item.children, item.id));
-          }
-          return Object.assign({}, item, { value: item.id, parentId });
-        })
-      );
-      return output;
-    };
-    return {
-      list: core(data, null),
-    };
   },
   createMergeTree: (parentId) => (data, newData) => {
     const core = (data) => {
@@ -391,6 +349,54 @@ CascaderField.defaultProps = {
     };
     return core(data);
   },
+};
+
+const cascaderFieldDataFormat = (data, nodeFormat) => {
+  const core = (data, parentId) => {
+    const output = [];
+    output.push(
+      ...(data || []).map((item) => {
+        if (typeof nodeFormat === "function") {
+          Object.assign(item, nodeFormat(item));
+        }
+        if (item.children && item.children.length > 0) {
+          output.push(...core(item.children, item.id));
+        }
+        return Object.assign({}, item, { value: item.id, parentId });
+      })
+    );
+    return output;
+  };
+  return {
+    list: core(data, null),
+  };
+};
+
+const CascaderField = ({
+  maxLength = Number.MAX_VALUE,
+  nodeFormat,
+  dataFormat = cascaderFieldDataFormat,
+  ...props
+}) => {
+  return (
+    <SelectInnerInput
+      {...Object.assign({}, cascaderFieldDefaultProps, props)}
+      dataFormat={(data) => {
+        return dataFormat(data, nodeFormat);
+      }}
+    >
+      {({ value, setValue }) => {
+        return (
+          <CascaderInner
+            {...Object.assign({}, cascaderFieldDefaultProps, props)}
+            size={maxLength}
+            value={value}
+            setValue={setValue}
+          />
+        );
+      }}
+    </SelectInnerInput>
+  );
 };
 
 export { createTreeUtils };

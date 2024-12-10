@@ -7,7 +7,7 @@ import { useDebouncedCallback } from "use-debounce";
 
 const SearchInput = ({
   value,
-  debounce,
+  debounce = 500,
   onSearch,
   isPopup,
   placeholder,
@@ -45,10 +45,6 @@ const SearchInput = ({
       }}
     />
   );
-};
-
-SearchInput.defaultProps = {
-  debounce: 500,
 };
 
 export default SearchInput;

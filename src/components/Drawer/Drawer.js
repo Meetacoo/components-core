@@ -222,11 +222,7 @@ export const computedCommonProps = ({
 };
 
 const Drawer = (props) => {
-  return <AntdDrawer {...computedCommonProps(props)} />;
-};
-
-Drawer.defaultProps = {
-  size: "small",
+  return <AntdDrawer size="small" {...computedCommonProps(props)} />;
 };
 
 export const useDrawer = () => {

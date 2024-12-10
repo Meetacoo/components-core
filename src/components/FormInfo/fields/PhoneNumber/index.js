@@ -133,8 +133,6 @@ const PhoneNumber = ({ rule, ...props }) => {
 
 PhoneNumber.Field = PhoneNumberField;
 
-PhoneNumber.defaultProps = {};
-
 PhoneNumber.format = ({ code, value }) => {
   const phoneCode = code ? getCountryCallingCode(code) : null;
 

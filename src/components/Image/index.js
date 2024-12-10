@@ -6,7 +6,7 @@ import { Avatar, Skeleton } from "antd";
 import { cloneElement } from "react";
 import loadImage from "./loadImage";
 import style from "./style.module.scss";
-import defaultAvatar from "../../defaultAvatar.svg";
+import defaultAvatarSvg from "../../defaultAvatar.svg";
 import { usePreset } from "@components/Global";
 
 const ImageInner = ({
@@ -115,8 +115,8 @@ const Image = ({
   src,
   alt,
   onClick,
-  loading,
-  error,
+  loading = <Skeleton.Avatar shape="square" active />,
+  error = <Icon role="error-icon" colorful type="icon-color-touxiang-nan" />,
   className,
   apis,
   ...props
@@ -146,17 +146,17 @@ Image.Avatar = ({
   src,
   alt,
   gender,
-  loading,
-  error,
+  loading = <Skeleton.Avatar shape="square" active />,
+  error = <Icon role="error-icon" colorful type="icon-color-touxiang-nan" />,
   className,
   gap,
   icon,
   children,
   shape,
-  size,
+  size = 100,
   width,
   height,
-  defaultAvatar,
+  defaultAvatar = defaultAvatarSvg,
   apis,
   ...props
 }) => {
@@ -231,12 +231,5 @@ const commonDefaultProps = {
   error: <Icon role="error-icon" colorful type="icon-color-touxiang-nan" />,
   loading: <Skeleton.Avatar shape="square" active />,
 };
-
-Image.defaultProps = Object.assign({}, commonDefaultProps);
-
-Image.Avatar.defaultProps = Object.assign({}, commonDefaultProps, {
-  size: 100,
-  defaultAvatar,
-});
 
 export default Image;

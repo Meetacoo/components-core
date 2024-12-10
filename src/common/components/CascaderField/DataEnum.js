@@ -26,21 +26,19 @@ const DataEnumInner = withFetch(
   }
 );
 
+const children = (item) => {
+  return get(item, "label", "");
+};
+
 export const DataEnum = (props) => {
   const { locale } = usePreset();
 
   const key = `${locale}_${props.name}_${props.type}`;
   const cache = dataEnumCache.get(key);
   if (cache && !props.force) {
-    return props.children(cache);
+    return (props?.children || children)(cache);
   }
   return <DataEnumInner {...props} />;
-};
-
-DataEnum.defaultProps = {
-  children: (item) => {
-    return get(item, "label", "");
-  },
 };
 
 export default DataEnum;

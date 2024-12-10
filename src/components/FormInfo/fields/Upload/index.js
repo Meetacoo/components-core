@@ -9,16 +9,31 @@ import { InputFileButton, useFileUpload } from "@common/hocs/withInputFile";
 
 const { useOnChange } = hooks;
 
+const defaultAccept = [
+  ".pdf",
+  ".jpg",
+  ".png",
+  ".jpeg",
+  ".doc",
+  ".docx",
+  ".xls",
+  ".xlsx",
+  ".html",
+  ".msg",
+  ".eml",
+  ".zip",
+];
+
 const UploadField = ({
   className,
-  fileSize,
-  maxLength,
-  multiple,
+  fileSize = 30,
+  maxLength = 10,
+  multiple = true,
   size,
-  accept,
-  children,
-  renderTips,
-  showUploadList,
+  accept = defaultAccept,
+  children = "上传附件",
+  renderTips = (defaultTips) => defaultTips,
+  showUploadList = true,
   onSave,
   ossUpload,
   onUpload,
@@ -91,40 +106,9 @@ const UploadField = ({
   );
 };
 
-UploadField.defaultProps = {
-  defaultValue: [],
-  // icon:  <Icon type="icon-shangchuanfujian" />,
-  children: "上传附件",
-  accept: [
-    ".pdf",
-    ".jpg",
-    ".png",
-    ".jpeg",
-    ".doc",
-    ".docx",
-    ".xls",
-    ".xlsx",
-    ".html",
-    ".msg",
-    ".eml",
-    ".zip",
-  ],
-  renderTips: (defaultTips) => {
-    return defaultTips;
-  },
-  multiple: true,
-  showUploadList: true,
-  maxLength: 10,
-  fileSize: 30,
-};
-
-const Upload = (props) => {
-  const render = useOnChange(props);
+const Upload = ({ interceptor = "file-format", ...props }) => {
+  const render = useOnChange(Object.assign({}, props, { interceptor }));
   return render(UploadField);
-};
-
-Upload.defaultProps = {
-  interceptor: "file-format",
 };
 
 Upload.Field = UploadField;

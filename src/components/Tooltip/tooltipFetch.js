@@ -9,7 +9,7 @@ const TooltipFetch = ({
   api,
   children,
   fetchContent,
-  showLoading,
+  showLoading = true,
   loadingClassName,
   force,
   ...props
@@ -43,10 +43,6 @@ const TooltipFetch = ({
       </span>
     </Tooltip>
   );
-};
-
-TooltipFetch.defaultProps = {
-  showLoading: true,
 };
 
 export default TooltipFetch;

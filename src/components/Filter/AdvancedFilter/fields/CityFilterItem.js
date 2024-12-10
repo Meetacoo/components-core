@@ -13,8 +13,8 @@ const { CheckableTag } = Tag;
 const CityFilterItemInner = ({
   value,
   onChange,
-  single,
-  maxLength,
+  single = false,
+  maxLength = 5,
   addressApi,
   ...props
 }) => {
@@ -109,9 +109,6 @@ const CityFilterItemInner = ({
     </>
   );
 };
-CityFilterItemInner.defaultProps = {
-  single: false,
-  maxLength: 5,
-};
+
 const CityFilterItem = withAddressApi(CityFilterItemInner);
 export default CityFilterItem;

@@ -8,9 +8,9 @@ const ListFilterItem = ({
   value,
   onChange,
   label,
-  single,
-  maxLength,
-  items,
+  single = false,
+  maxLength = 5,
+  items = [],
   custom,
 }) => {
   const { message } = App.useApp();
@@ -76,12 +76,6 @@ const ListFilterItem = ({
         })()}
     </>
   );
-};
-
-ListFilterItem.defaultProps = {
-  single: false,
-  maxLength: 5,
-  items: [],
 };
 
 export default ListFilterItem;

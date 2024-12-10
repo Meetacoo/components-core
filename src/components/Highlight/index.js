@@ -19,7 +19,7 @@ export const HighlightProvider = ({ list, children, highlightClassName }) => {
 };
 HighlightProvider.defaultProps = {
   caseSensitive: false,
-  list: [],
+  list: ["西"],
   highlightClassName: "",
 };
 const Highlight = ({ tagName, children }) => {

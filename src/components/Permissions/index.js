@@ -29,10 +29,10 @@ export const usePermissionsPass = ({ request }) => {
 };
 
 const Permissions = ({
-  type,
+  type = "hidden",
   className,
-  tagName,
-  message,
+  tagName = "span",
+  message = "您暂无权限，请联系管理员",
   request,
   children,
   ...props
@@ -63,12 +63,6 @@ const Permissions = ({
   }
 
   return null;
-};
-
-Permissions.defaultProps = {
-  type: "hidden",
-  tagName: "span",
-  message: "您暂无权限，请联系管理员",
 };
 
 export default Permissions;

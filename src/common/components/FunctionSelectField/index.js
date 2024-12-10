@@ -35,7 +35,16 @@ const FunctionSelectField = ({ apis: currentApis, ...props }) => {
   );
   return (
     <CascaderField
-      {...props}
+      {...Object.assign(
+        {},
+        {
+          overlayWidth: "640px",
+          getSearchProps: (searchText) => {
+            return { data: { searchText } };
+          },
+        },
+        props
+      )}
       api={Object.assign(
         {},
         {
@@ -62,13 +71,6 @@ const FunctionSelectField = ({ apis: currentApis, ...props }) => {
       )}
     />
   );
-};
-
-FunctionSelectField.defaultProps = {
-  overlayWidth: "640px",
-  getSearchProps: (searchText) => {
-    return { data: { searchText } };
-  },
 };
 
 FunctionSelectField.defaultData = defaultFunctionData;

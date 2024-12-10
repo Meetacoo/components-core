@@ -21,11 +21,11 @@ const calculateType = (prefixType, prefix, colorful) => {
 
 const Iconfont = ({
   type,
-  colorful,
+  colorful = false,
   className,
   size,
   style,
-  prefix,
+  prefix = "",
   ...other
 }) => {
   const fontClass = calculateType(type, prefix, colorful),
@@ -59,11 +59,6 @@ const Iconfont = ({
       style={computedStyle}
     />
   );
-};
-
-Iconfont.defaultProps = {
-  colorful: false,
-  prefix: "",
 };
 
 Iconfont.propTypes = {

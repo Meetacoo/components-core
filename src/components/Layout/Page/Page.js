@@ -1,4 +1,4 @@
-import { defaultProps, useContext } from "../context";
+import { defaultProps as defaultPropsContext, useContext } from "../context";
 import isEqual from "lodash/isEqual";
 import { useEffect, useRef } from "react";
 import { Result } from "antd";
@@ -21,7 +21,7 @@ const PageInner = ({ children, isPass, ...props }) => {
        * */
       const targetProps = Object.assign(
         {},
-        defaultProps,
+        defaultPropsContext,
         props,
         typeof localMenuOpenRef.current === "boolean"
           ? { menuOpen: localMenuOpenRef.current }
@@ -48,13 +48,19 @@ const Page = ({ featureId, name, openFeatures, ...props }) => {
   if (openFeatures === true) {
     return (
       <Features id={name}>
-        {({ isPass }) => <PageInner {...props} key={name} isPass={isPass} />}
+        {({ isPass }) => (
+          <PageInner
+            {...Object.assign({}, props, defaultPropsContext)}
+            key={name}
+            isPass={isPass}
+          />
+        )}
       </Features>
     );
   }
-  return <PageInner {...props} key={name} />;
+  return (
+    <PageInner {...Object.assign({}, props, defaultPropsContext)} key={name} />
+  );
 };
-
-Page.defaultProps = defaultProps;
 
 export default Page;

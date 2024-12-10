@@ -6,7 +6,7 @@ const ColItem = ({
   type,
   item,
   isEmpty,
-  emptyRender,
+  emptyRender = () => "-",
   hover,
   primary,
   children,
@@ -42,14 +42,10 @@ const ColItem = ({
       }}
     >
       {isEmpty
-        ? emptyRender({ type, item, hover, primary, children })
+        ? emptyRender?.({ type, item, hover, primary, children })
         : children}
     </div>
   );
-};
-
-ColItem.defaultProps = {
-  emptyRender: () => "-",
 };
 
 export default ColItem;

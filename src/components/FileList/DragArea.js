@@ -51,8 +51,8 @@ export const UploadButton = ({ children }) => {
 };
 export const DragAreaOuter = ({
   title,
-  accept,
-  fileSize,
+  accept = [".png", ".jpg", ".pdf", ".docx", ".doc"],
+  fileSize = 20,
   maxLength,
   onFileSelected,
   children,
@@ -104,12 +104,11 @@ export const DragAreaOuter = ({
   );
 };
 
-DragAreaOuter.defaultProps = {
-  fileSize: 20,
-  accept: [".png", ".jpg", ".pdf", ".docx", ".doc"],
-};
-
-export const UploadTips = ({ icon, title, renderTips }) => {
+export const UploadTips = ({
+  icon,
+  title,
+  renderTips = (defaultTips) => defaultTips,
+}) => {
   const { accept, fileSize, maxLength } = useContext();
   const intl = useIntl({ moduleName: "FileList" });
   const tipsText = renderTips(
@@ -140,13 +139,7 @@ export const UploadTips = ({ icon, title, renderTips }) => {
   );
 };
 
-UploadTips.defaultProps = {
-  renderTips: (defaultTips) => {
-    return defaultTips;
-  },
-};
-
-const DragArea = ({ children, className }) => {
+const DragArea = ({ children = <UploadTips />, className }) => {
   const { open, accept, onOpenChange, onFileSelected } = useContext();
   if (!open) {
     return null;
@@ -188,10 +181,6 @@ const DragArea = ({ children, className }) => {
       {children}
     </div>
   );
-};
-
-DragArea.defaultProps = {
-  children: <UploadTips />,
 };
 
 export default DragArea;

@@ -3,7 +3,7 @@ import { Table as AntdTable } from "antd";
 import { useEffect, useMemo, useRef, useState } from "react";
 import classnames from "classnames";
 import Scroller from "@common/components/Scroller";
-import { getScrollEl } from "@common/utils/importantContainer";
+import { getScrollEl as getScrollElFunc } from "@common/utils/importantContainer";
 import useResize from "@common/hooks/useResize";
 import useTableConfig from "./useTableConfig";
 import useColumnTypeProps from "@components/Table/useColumnTypeProps";
@@ -14,14 +14,14 @@ import useRefCallback from "@kne/use-ref-callback";
 const Table = ({
   columns,
   className,
-  getScrollEl,
-  sticky,
-  stickyOffset,
-  pagination,
-  columnRenderProps,
-  rowKey,
+  getScrollEl = getScrollElFunc,
+  sticky = false,
+  stickyOffset = "var(--nav-height)",
+  pagination = false,
+  columnRenderProps = {},
+  rowKey = "id",
   dataSource,
-  controllerOpen,
+  controllerOpen = true,
   name,
   summary,
   scroll,
@@ -193,16 +193,6 @@ const Table = ({
       )}
     </div>
   );
-};
-
-Table.defaultProps = {
-  controllerOpen: true,
-  rowKey: "id",
-  getScrollEl,
-  columnRenderProps: {},
-  sticky: false,
-  stickyOffset: "var(--nav-height)",
-  pagination: false,
 };
 
 export default Table;

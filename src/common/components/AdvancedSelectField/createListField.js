@@ -198,17 +198,7 @@ const createListField = ({ renderList, defaultProps }) => {
     );
   };
 
-  const ListField = ({ extra, ...props }) => {
-    return (
-      <SelectInnerInput {...props} extra={extra}>
-        {({ value, setValue }) => {
-          return <ListInner value={value} setValue={setValue} />;
-        }}
-      </SelectInnerInput>
-    );
-  };
-
-  ListField.defaultProps = Object.assign(
+  const listFieldDefaultProps = Object.assign(
     {},
     {
       isPopup: true,
@@ -227,6 +217,19 @@ const createListField = ({ renderList, defaultProps }) => {
     },
     defaultProps
   );
+
+  const ListField = ({ extra, ...props }) => {
+    return (
+      <SelectInnerInput
+        {...Object.assign({}, listFieldDefaultProps, props)}
+        extra={extra}
+      >
+        {({ value, setValue }) => {
+          return <ListInner value={value} setValue={setValue} />;
+        }}
+      </SelectInnerInput>
+    );
+  };
 
   return ListField;
 };

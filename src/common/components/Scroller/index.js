@@ -60,7 +60,12 @@ const ScrollBar = ({ onScroll, getContainer, ...scrollerProps }) => {
   );
 };
 
-const Scroller = ({ className, scroller, getScrollTarget, children }) => {
+const Scroller = ({
+  className,
+  scroller = true,
+  getScrollTarget = () => document.querySelector(".simplebar-content-wrapper"),
+  children,
+}) => {
   const [scrollerProps, setScrollerProps] = useState({
     left: 0,
     width: 0,
@@ -157,11 +162,6 @@ const Scroller = ({ className, scroller, getScrollTarget, children }) => {
       />
     </div>
   );
-};
-
-Scroller.defaultProps = {
-  scroller: true,
-  getScrollTarget: () => document.querySelector(".simplebar-content-wrapper"),
 };
 
 export default Scroller;

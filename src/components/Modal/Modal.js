@@ -322,13 +322,11 @@ const Modal = (props) => {
   const childrenRef = useRef(null);
   return (
     <AntdModal
-      {...computedCommonProps(Object.assign({}, props, { childrenRef }))}
+      {...computedCommonProps(
+        Object.assign({}, { size: "default" }, props, { childrenRef })
+      )}
     />
   );
-};
-
-Modal.defaultProps = {
-  size: "default", //large small
 };
 
 export const useModal = () => {

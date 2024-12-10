@@ -29,94 +29,90 @@ if (!isMobile()) {
   document.body.classList.add("simplebar-content-wrapper");
 }
 
-const ConfigProvider = withFetch(({ data: message, themeToken, children }) => {
-  const [isInit, setIsInit] = useState(false);
-  useEffect(() => {
-    let styleEl = document.head.querySelector("#component-core-theme");
-    if (!styleEl) {
-      styleEl = document.createElement("style");
-      styleEl.id = "component-core-theme";
-      document.head.appendChild(styleEl);
+const ConfigProvider = withFetch(
+  ({ data: message, themeToken = { colorPrimary: "#5cb8b2" }, children }) => {
+    const [isInit, setIsInit] = useState(false);
+    useEffect(() => {
+      let styleEl = document.head.querySelector("#component-core-theme");
+      if (!styleEl) {
+        styleEl = document.createElement("style");
+        styleEl.id = "component-core-theme";
+        document.head.appendChild(styleEl);
+      }
+      const colorPrimary = Color(themeToken.colorPrimary);
+      const themeProps = {
+        "--primary-color": themeToken.colorPrimary,
+        "--primary-color-red": colorPrimary.red(),
+        "--primary-color-green": colorPrimary.green(),
+        "--primary-color-blue": colorPrimary.blue(),
+        "--primary-color-06": colorPrimary.alpha(0.06).string(),
+      };
+      range(0, 10).forEach((i) => {
+        themeProps[`--primary-color-${i + 1}`] = colorPrimary
+          .alpha((i + 1) / 10)
+          .string();
+      });
+      styleEl.textContent = `.${style["container"]
+        .replace(/\+/g, "\\+")
+        .replace(/\//g, "\\/")}{${transform(
+        themeProps,
+        (result, value, key) => {
+          result.push(`${key}:${value};`);
+        },
+        []
+      ).join("")}}`;
+      setIsInit(true);
+      return () => {
+        // uninstall();
+      };
+    }, [themeToken.colorPrimary]);
+    //设置主题色成功再展示页面
+    if (!isInit) {
+      return null;
     }
-    const colorPrimary = Color(themeToken.colorPrimary);
-    const themeProps = {
-      "--primary-color": themeToken.colorPrimary,
-      "--primary-color-red": colorPrimary.red(),
-      "--primary-color-green": colorPrimary.green(),
-      "--primary-color-blue": colorPrimary.blue(),
-      "--primary-color-06": colorPrimary.alpha(0.06).string(),
-    };
-    range(0, 10).forEach((i) => {
-      themeProps[`--primary-color-${i + 1}`] = colorPrimary
-        .alpha((i + 1) / 10)
-        .string();
-    });
-    styleEl.textContent = `.${style["container"]
-      .replace(/\+/g, "\\+")
-      .replace(/\//g, "\\/")}{${transform(
-      themeProps,
-      (result, value, key) => {
-        result.push(`${key}:${value};`);
-      },
-      []
-    ).join("")}}`;
-    setIsInit(true);
-    return () => {
-      // uninstall();
-    };
-  }, [themeToken.colorPrimary]);
-  //设置主题色成功再展示页面
-  if (!isInit) {
-    return null;
+    return (
+      <AntdConfigProvider
+        getTargetContainer={getScrollEl}
+        getPopupContainer={getScrollEl}
+        locale={message}
+        wave={{ disabled: true }}
+        autoInsertSpace={false}
+        theme={{
+          token: Object.assign(
+            {},
+            {
+              borderRadius: 2,
+              colorError: "#f53f3f",
+              colorInfo: "#165dff",
+              colorSuccess: "#00b42a",
+              colorWarning: "#ff7d00",
+              algorithm: themeToken.isDark
+                ? theme.darkAlgorithm
+                : theme.defaultAlgorithm,
+              colorPrimary: themeToken.colorPrimary,
+              colorPrimaryHover: Color(themeToken.colorPrimary)
+                .lighten(0.1)
+                .hex(),
+              colorPrimaryActive: Color(themeToken.colorPrimary)
+                .darken(0.1)
+                .hex(),
+              controlItemBgActive: "var(--primary-color-1)",
+              controlItemBgHover: "var(--primary-color-1)",
+              colorTextBase: "#222222",
+              colorText: "#222222",
+              colorLink: themeToken.colorPrimary,
+              colorLinkActive: themeToken.colorPrimary,
+              colorLinkHover: themeToken.colorPrimary,
+            },
+            themeToken
+          ),
+        }}
+      >
+        {children}
+      </AntdConfigProvider>
+    );
   }
-  return (
-    <AntdConfigProvider
-      getTargetContainer={getScrollEl}
-      getPopupContainer={getScrollEl}
-      locale={message}
-      wave={{ disabled: true }}
-      autoInsertSpace={false}
-      theme={{
-        token: Object.assign(
-          {},
-          {
-            borderRadius: 2,
-            colorError: "#f53f3f",
-            colorInfo: "#165dff",
-            colorSuccess: "#00b42a",
-            colorWarning: "#ff7d00",
-            algorithm: themeToken.isDark
-              ? theme.darkAlgorithm
-              : theme.defaultAlgorithm,
-            colorPrimary: themeToken.colorPrimary,
-            colorPrimaryHover: Color(themeToken.colorPrimary)
-              .lighten(0.1)
-              .hex(),
-            colorPrimaryActive: Color(themeToken.colorPrimary)
-              .darken(0.1)
-              .hex(),
-            controlItemBgActive: "var(--primary-color-1)",
-            controlItemBgHover: "var(--primary-color-1)",
-            colorTextBase: "#222222",
-            colorText: "#222222",
-            colorLink: themeToken.colorPrimary,
-            colorLinkActive: themeToken.colorPrimary,
-            colorLinkHover: themeToken.colorPrimary,
-          },
-          themeToken
-        ),
-      }}
-    >
-      {children}
-    </AntdConfigProvider>
-  );
-});
-
-ConfigProvider.defaultProps = {
-  themeToken: {
-    colorPrimary: "#5cb8b2",
-  },
-};
+);
 
 const GlobalFontLoader = createWithRemoteLoader({
   modules: [
@@ -136,7 +132,10 @@ const GlobalFontLoader = createWithRemoteLoader({
 });
 
 export const GlobalProvider = ({
-  preset,
+  preset = {
+    locale: "zh-CN",
+    apis: {},
+  },
   children,
   themeToken,
   init,
@@ -194,13 +193,6 @@ export const GlobalProvider = ({
       </PresetProvider>
     </Provider>
   );
-};
-
-GlobalProvider.defaultProps = {
-  preset: {
-    locale: "zh-CN",
-    apis: {},
-  },
 };
 
 export const PureGlobal = ({ children, ...props }) => {

@@ -1,6 +1,6 @@
 import { Alert, Button, Col, Layout as AntdLayout, Row } from "antd";
 import { useCallback, useEffect, useState } from "react";
-import { defaultProps, Provider } from "./context";
+import { defaultProps as defaultPropsContext, Provider } from "./context";
 import Navigation, { navigationHeight } from "@components/Navigation";
 import { getScrollEl } from "@common/utils/importantContainer";
 import ReactErrorBoundary from "@kne/react-error-boundary";
@@ -31,9 +31,11 @@ const ErrorBoundary = (props) => {
   return <ReactErrorBoundary {...props} errorComponent={ErrorComponent} />;
 };
 
-const Layout = ({ children, theme, navigation }) => {
+const Layout = ({ children, theme, navigation = {} }) => {
   const [scrollLeft, setScrollLeft] = useState(0);
-  const [pageProps, _setPageProps] = useState(Object.assign({}, defaultProps));
+  const [pageProps, _setPageProps] = useState(
+    Object.assign({}, defaultPropsContext)
+  );
   const { permissions } = usePermissions();
   const setPageProps = useCallback((value) => {
     return _setPageProps((pageProps) => {
@@ -142,10 +144,6 @@ const Layout = ({ children, theme, navigation }) => {
       </ErrorBoundary>
     </AntdLayout>
   );
-};
-
-Layout.defaultProps = {
-  navigation: {},
 };
 
 export default Layout;

@@ -4,6 +4,7 @@ import {
   forwardRef,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -490,12 +491,36 @@ const setValueInType = (value, setMapping) => {
   return value;
 };
 const _SelectInnerInput = ({
-  api,
+  api = {
+    loader: () => [],
+  },
   className,
-  displayItems,
+  displayItems = [],
   wrapClassName,
-  ...props
+  ...others
 }) => {
+  const props = useMemo(
+    () =>
+      Object.assign(
+        {},
+        {
+          displayItems: [],
+          extra: null,
+          api: {
+            loader: () => [],
+          },
+          dataFormat: (data) => {
+            return { list: data };
+          },
+          placement: "bottomLeft",
+          showSelectedTag: true,
+          allowClear: true,
+        },
+        others
+      ),
+    [others]
+  );
+
   const { locale } = usePreset();
   const [searchText, setSearchText] = useState("");
   const [mapping, setMapping] = useState(
@@ -613,20 +638,6 @@ const _SelectInnerInput = ({
       </div>
     </Provider>
   );
-};
-
-_SelectInnerInput.defaultProps = {
-  displayItems: [],
-  extra: null,
-  api: {
-    loader: () => [],
-  },
-  dataFormat: (data) => {
-    return { list: data };
-  },
-  placement: "bottomLeft",
-  showSelectedTag: true,
-  allowClear: true,
 };
 
 const SelectInnerInput = createWithIntl({

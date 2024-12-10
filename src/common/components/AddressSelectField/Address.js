@@ -325,24 +325,7 @@ const AddressInner = ({ value, setValue }) => {
   );
 };
 
-const AddressSelectField = (props) => {
-  return (
-    <SelectInnerInput {...props}>
-      {({ value, setValue }) => {
-        return (
-          <IntlProvider
-            moduleName="AddressSelect"
-            importMessages={importMessages}
-          >
-            <AddressInner value={value} setValue={setValue} />
-          </IntlProvider>
-        );
-      }}
-    </SelectInnerInput>
-  );
-};
-
-AddressSelectField.defaultProps = {
+const AddressSelectFieldDefaultProps = {
   overlayWidth: "500px",
   isPopup: true,
   api: addressDefaultApi,
@@ -359,8 +342,45 @@ AddressSelectField.defaultProps = {
   },
 };
 
+const AddressSelectField = (props) => {
+  return (
+    <SelectInnerInput
+      {...Object.assign({}, AddressSelectFieldDefaultProps, props)}
+    >
+      {({ value, setValue }) => {
+        return (
+          <IntlProvider
+            moduleName="AddressSelect"
+            importMessages={importMessages}
+          >
+            <AddressInner value={value} setValue={setValue} />
+          </IntlProvider>
+        );
+      }}
+    </SelectInnerInput>
+  );
+};
+
+const addressEnumDefaultChildren = (
+  { city, parent },
+  { displayParent, locale }
+) => {
+  if (displayParent) {
+    return parent
+      ? `${getLabelForLocal(parent, locale)}·${getLabelForLocal(city, locale)}`
+      : getLabelForLocal(city, locale);
+  }
+  return getLabelForLocal(city, locale);
+};
+
 const AddressEnum = withFetch(
-  ({ name, data, getAddressApi, children, ...props }) => {
+  ({
+    name,
+    data,
+    getAddressApi,
+    children = addressEnumDefaultChildren,
+    ...props
+  }) => {
     const { locale } = usePreset();
     const addressApi = useMemo(() => createAddressApi(data), [data]);
     return getAddressApi ? (
@@ -378,7 +398,10 @@ const AddressEnum = withFetch(
           });
         }}
         render={({ data }) =>
-          children(data, Object.assign({}, props, { locale }))
+          children(
+            data,
+            Object.assign({}, { displayParent: false }, props, { locale })
+          )
         }
       />
     );

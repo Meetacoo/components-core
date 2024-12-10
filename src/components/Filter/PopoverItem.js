@@ -11,7 +11,7 @@ const PopoverItem = ({
   label,
   onValidate,
   overlayClassName,
-  placement,
+  placement = "bottomLeft",
   onOpenChange,
   onChange,
   children,
@@ -84,11 +84,6 @@ const PopoverItem = ({
       </span>
     </Popover>
   );
-};
-
-PopoverItem.defaultProps = {
-  placeholder: "请选择",
-  placement: "bottomLeft",
 };
 
 export default PopoverItem;

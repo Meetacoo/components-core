@@ -17,9 +17,9 @@ import classnames from "classnames";
 const HistoryStore = ({
   className,
   overlayClassName,
-  storeName,
-  maxLength,
-  label,
+  storeName = "HISTORY_STORE_KEY",
+  maxLength = 5,
+  label = "最近搜索",
   children,
   onSelect,
   zIndex,
@@ -147,12 +147,6 @@ const HistoryStore = ({
       </div>
     </Popover>
   );
-};
-
-HistoryStore.defaultProps = {
-  maxLength: 5,
-  label: "最近搜索",
-  storeName: "HISTORY_STORE_KEY",
 };
 
 export default HistoryStore;
